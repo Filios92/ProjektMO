@@ -45,17 +45,14 @@ graph.print_airports()
 graph.print_flights()
 graph.print_graph()
 
-
 print('Graph finding tests')
 t = Tour(graph, 0, 1)
-t.set_flights(graph.find_path(0, 1))
+t.find_path()
 print(t)
 
-f = []
-print(graph.find_path(2, 3, flights=f))
-print(f)
-# f=graph.find_random_path(1, 3)
-# print(f)
+t = Tour(graph, 0, 1)
+t.find_random_path()
+print(t)
 
 # Parameters
 params = {
@@ -69,30 +66,28 @@ params = {
 }
 
 # Make popoulation
-pop = Population(5, graph, params['start_idx'], params['end_idx'], True)
+# pop = Population(5, graph, params['start_idx'], params['end_idx'], True)
 
 # Get best one
-fittest = pop.get_fittest()
-print('Initial\n\tduration: {}\n\tcost: {}\n\tflights: #{}: {}'
-    .format(
-        fittest.get_duration(),
-        fittest.get_cost(),
-        fittest.get_size(),
-        fittest.get_list()))
+# fittest = pop.get_fittest()
+# print('Initial\n\tduration: {}\n\tcost: {}\n\tflights: #{}: {}'
+#     .format(
+#         fittest.get_duration(),
+#         fittest.get_cost(),
+#         fittest.get_size(),
+#         fittest.get_list()))
 
-# Transmutation!
-pop = GA.evolve_population(pop)
-for x in range(1,10):
-    pop = GA.evolve_population(pop)
+# # Transmutation!
+# pop = GA.evolve_population(pop)
+# for x in range(1,10):
+#     pop = GA.evolve_population(pop)
 
-# Get best best one
-fittest = pop.get_fittest()
-print('Finished')
-print('Final\n\tduration: {}\n\tcost: {}\n\tflights: #{}: {}'
-    .format(
-        fittest.get_duration(),
-        fittest.get_cost(),
-        fittest.get_size(),
-        fittest.get_list()))
-
-
+# # Get best best one
+# fittest = pop.get_fittest()
+# print('Finished')
+# print('Final\n\tduration: {}\n\tcost: {}\n\tflights: #{}: {}'
+#     .format(
+#         fittest.get_duration(),
+#         fittest.get_cost(),
+#         fittest.get_size(),
+#         fittest.get_list()))

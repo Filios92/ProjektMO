@@ -25,5 +25,9 @@ class ManagerBase:
     def get_next_index_for_array(self, element):
         element.set_index(len(self._array))
 
-    def get_full(self, indeces):
-        return list(x for x in self._array if x.index in indeces)
+    def get_full(self, indices):
+        # return list(x for x in self._array if x.index in indices)
+        if indices is None:
+            return self._array
+        else:
+            return list(x for x in self._array if x.index in indices)
