@@ -44,8 +44,8 @@ class Flight:
         self._index = index
 
     def __repr__(self):
-        return 'Flight #{} from {} to {} at {}h for {}$ and {:6.2f}h'.format(
-                        self._index,
+        return 'Flight {:>3} from {:2} to {:2} @{:5}h for {:7.2f}$ and {:4.1f}h'.format(
+                        '#{}'.format(self._index),
                         self._src.index,
                         self._dst.index,
                         self._departure_time,

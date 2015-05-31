@@ -64,7 +64,8 @@ class GraphManager:
             return None
         for node in self.graph[start]:
             if node[1] not in path:
-                flights.append(node[0])
+                # flights.append(node[0])
+                flights = flights + [node[0]]
                 newpath = self.find_path(node[1], end, path, flights)
                 if newpath: return newpath
                 else: flights.pop()
@@ -84,10 +85,12 @@ class GraphManager:
         random.shuffle(posibilities)
         for node in posibilities:
             if node[1] not in path:
-                flights.append(node[0])
+                # flights.append(node[0])
+                flights = flights + [node[0]]
                 newpath = self.find_random_path(node[1], end, path, flights)
                 if newpath: return newpath
                 else: flights.pop()
+        # flights.pop()
         return None
 
     def print_airports(self):

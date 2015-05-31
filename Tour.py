@@ -31,7 +31,7 @@ class Tour:
         return cost
 
     def get_duration(self):
-        # duration = 0;
+        duration = 0;
         # old_one = None
         # for flight in self.flights:
         #   duration += flight.duration
@@ -41,8 +41,9 @@ class Tour:
         #       duration += flight.departure_time - old_one.departure_time + old_one.duration
         # Different approach
         # TODO: check order?
-        flights = self.as_flights_full()
-        duration = flights[-1].departure_time + flights[-1].duration - flights[0].departure_time
+        if self.flights:
+            flights = self.as_flights_full()
+            duration = flights[-1].departure_time + flights[-1].duration - flights[0].departure_time
         return duration
 
     def get_size(self):
@@ -52,10 +53,13 @@ class Tour:
         return self.flights
 
     def as_flights_full(self):
-        return self.graph.get_flight_manager().get_full(self.flights)
+        if self.flights:
+            return self.graph.get_flight_manager().get_full(self.flights) if self.flights else None
+        else:
+            return []
 
     def as_airports(self):
-        return [self.src_idx] + list(x.dst.index for x in self.as_flights_full())
+        return [self.src_idx] + list(x.dst.index for x in self.as_flights_full()) if self.flights else None
 
     def airports_to_flights(self):
         pass
@@ -64,7 +68,8 @@ class Tour:
         self.set_flights(self.graph.find_path(self.src_idx, self.dst_idx))
 
     def find_random_path(self):
-        self.set_flights(self.graph.find_random_path(self.src_idx, self.dst_idx))
+        a = self.graph.find_random_path(self.src_idx, self.dst_idx)
+        self.set_flights(a)
 
     def __repr__(self):
         return 'Tour from {} to {} \n  airports: {}\n  flights idx: {}\n  flights full: \n{}\n  Total cost: {} duration: {}\n'.format(

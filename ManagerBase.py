@@ -30,4 +30,8 @@ class ManagerBase:
         if indices is None:
             return self._array
         else:
-            return list(x for x in self._array if x.index in indices)
+            # return list(x for x in self._array if x.index in indices)
+            ret = []
+            for x in indices:
+                ret = ret + [self.get(x)]
+            return ret
