@@ -19,15 +19,9 @@ graph.print_graph()
 # t.find_path()
 # print(t)
 
-<<<<<<< HEAD
 # t = Tour(graph, 0, 1)
 # t.find_random_path()
 # print(t)
-=======
-t = Tour(graph, 0, 2)
-t.find_random_path()
-print(t)
->>>>>>> origin/master
 
 # Parameters
 params = {
