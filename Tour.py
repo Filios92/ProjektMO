@@ -26,8 +26,8 @@ class Tour:
 
     def get_cost(self):
         cost = 0
-        # for flight in self.as_full_flights():
-            # cost += flight.cost
+        for flight in self.as_flights_full():
+            cost += flight.cost
         return cost
 
     def get_duration(self):
@@ -41,32 +41,37 @@ class Tour:
         #       duration += flight.departure_time - old_one.departure_time + old_one.duration
         # Different approach
         # TODO: check order?
-        # flights = self.as_full_flights
-        # duration = flights[-1].departure_time + flights[-1].duration - flights[0].departure_time
-        return 0
+        flights = self.as_flights_full()
+        duration = flights[-1].departure_time + flights[-1].duration - flights[0].departure_time
+        return duration
 
     def get_size(self):
         return len(self.flights)
 
-    def get_list(self):
+    def as_flights_idx(self):
         return self.flights
 
-    def as_full_flights(self):
-        full = self.graph.get_flight_manager().get_full(self.flights)
-        return list(Airport(x) for x in full)
-        # return []
+    def as_flights_full(self):
+        return self.graph.get_flight_manager().get_full(self.flights)
 
     def as_airports(self):
-        return self.graph.get_airport_manager().get_full(self.flights)
-        # return []
+        return [self.src_idx] + list(x.dst.index for x in self.as_flights_full())
 
     def airports_to_flights(self):
         pass
 
+    def find_path(self):
+        self.set_flights(self.graph.find_path(self.src_idx, self.dst_idx))
+
+    def find_random_path(self):
+        self.set_flights(self.graph.find_random_path(self.src_idx, self.dst_idx))
+
     def __repr__(self):
-        return 'Tour from {} to {} \n\tflights: {}\n\tairports: {}\n\tfull: {}'.format(
+        return 'Tour from {} to {} \n  airports: {}\n  flights idx: {}\n  flights full: \n{}\n  Total cost: {} duration: {}\n'.format(
                 self.get_src(),
                 self.get_dst(),
-                self.get_list(), 
                 self.as_airports(), 
-                self.as_full_flights())
+                self.as_flights_idx(), 
+                '\n'.join('    ' + str(x) for x in self.as_flights_full()),
+                self.get_cost(),
+                self.get_duration())

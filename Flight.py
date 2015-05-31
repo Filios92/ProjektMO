@@ -44,12 +44,13 @@ class Flight:
         self._index = index
 
     def __repr__(self):
-        # return 'Flight #{} x: {} y: {}'
-        # .format(
-        #   self._index, 
-        #   self._x, 
-        #   self._y)
-        return '{}'.format(self._index)
+        return 'Flight #{} from {} to {} at {}h for {}$ and {:6.2f}h'.format(
+                        self._index,
+                        self._src.index,
+                        self._dst.index,
+                        self._departure_time,
+                        self._cost,
+                        self._duration)
 
 class FlightManager(ManagerBase):
     """
@@ -57,4 +58,3 @@ class FlightManager(ManagerBase):
     """
     def __init__(self):
         super(FlightManager, self).__init__()
-        

@@ -45,8 +45,7 @@ class Airport:
         return math.sqrt(xDistance**2 + yDistance**2)
 
     def __repr__(self):
-        # return 'Airport #{} x: {} y: {}'.format(self._index, self._x, self._y)
-        return '{}'.format(self._index)
+        return 'Airport #{} x: {:6.2f} y: {:6.2f}'.format(self._index, self._x, self._y)
 
 class AirportManager(ManagerBase):
     """

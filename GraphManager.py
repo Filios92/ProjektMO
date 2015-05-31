@@ -58,7 +58,7 @@ class GraphManager:
     def find_path(self, start, end, path=[], flights=[]):
         path = path + [start]
         if start == end:
-            return path
+            return flights
         if start not in self.graph:
             flights.pop()
             return None
@@ -87,27 +87,17 @@ class GraphManager:
                 flights.append(node[0])
                 newpath = self.find_random_path(node[1], end, path, flights)
                 if newpath: return newpath
+                else: flights.pop()
         return None
 
     def print_airports(self):
         for x in self.airport_manager.get_list():
-            print('Airport #{} at x = {:6.2f} y = {:6.2f}'
-                .format(
-                    x.index, 
-                    x.x, 
-                    x.y))
+            print(x)
         print('')
 
     def print_flights(self):
         for x in self.flight_manager.get_list():
-            print('Flight #{} from {} to {} at {}h for {}$ and {:6.2f}'
-                .format(
-                    x.index, 
-                    self.airport_manager.get_index(x.src), 
-                    self.airport_manager.get_index(x.dst), 
-                    x.departure_time, 
-                    x.cost, 
-                    x.duration))
+            print(x)
         print('')
 
     def print_graph(self):
