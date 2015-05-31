@@ -3,8 +3,8 @@ import math
 
 from ManagerBase import *
 
-MAX_X = 200
-MAX_Y = 200
+MAX_X = 90
+MAX_Y = 180
 
 # Airport part
 class Airport:
@@ -13,12 +13,12 @@ class Airport:
     """
     def __init__(self, x=None, y=None):
         if x is None:
-            self._x = random.random() * MAX_X
+            self._x = random.uniform(-1, 1) * MAX_X
         else:
             self._x = x
 
         if y is None:
-            self._y = random.random() * MAX_Y
+            self._y = random.uniform(-1, 1) * MAX_Y
         else:
             self._y = y
 
@@ -42,7 +42,7 @@ class Airport:
     def distance_to_airport(self, a):
         xDistance = math.fabs(a.x - self.x)
         yDistance = math.fabs(a.y - self.y)
-        return math.sqrt(xDistance**2 + yDistance**2)
+        return math.sqrt(xDistance ** 2 + yDistance ** 2)
 
     def __repr__(self):
         return 'Airport #{} x: {:6.2f} y: {:6.2f}'.format(self._index, self._x, self._y)
