@@ -3,7 +3,7 @@ import math
 
 from ManagerBase import *
 
-SPEED = 8
+SPEED = 10
 
 # Flight part
 class Flight:
@@ -44,7 +44,7 @@ class Flight:
         self._index = index
 
     def __repr__(self):
-        return 'Flight {:>3} from {:2} to {:2} @{:5}h for {:7.2f}$ and {:4.1f}h'.format(
+        return 'Flight {:>3} from {:2} to {:2} @{:5}h for {:7.2f}$ and {:4.2f}h'.format(
                         '#{}'.format(self._index),
                         self._src.index,
                         self._dst.index,

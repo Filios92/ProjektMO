@@ -14,8 +14,6 @@ PRICE_MAX = 2000
 DESTINATIONS_MIN = 2
 DESTINATIONS_MAX = 4
 
-MINUTES_PER_24H = 60 * 24  # unused
-
 class DataGenerator:
     test_airports = []
     test_graph = {}
@@ -65,7 +63,8 @@ class DataGenerator:
 
                     # rand price
                     current_price = random.randint(PRICE_MIN, PRICE_MAX)
-                    current_nodes.append([current_dest_airport[0], current_price, current_price / 4])  # TODO cost????
+                    current_departure_time = round(random.uniform(0, 24), 2)
+                    current_nodes.append([current_dest_airport[0], current_departure_time, current_price])
 
             # assign edges to current node
             self.test_graph[current_airport[0]] = current_nodes

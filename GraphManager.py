@@ -30,8 +30,8 @@ class GraphManager:
     # Suite as list of lists [ x, y ]
     def add_airport_suite(self, suite):
         for x in suite:
-            coor_x = x[0]
-            coor_y = x[1]
+            coor_x = x[1]
+            coor_y = x[2]
             self.airport_manager.add(Airport(coor_x, coor_y))
 
     # Suite as list of lists [ src_index, dst_index, departure_time, cost ]
@@ -109,7 +109,7 @@ class GraphManager:
         for x in self.graph:
             print('Airport #{:2}'.format(x))
             for y in self.graph[x]:
-                print('         {:2} dest: {:2} price: {:5} cost: {:5}'
+                print('         {:2} dest: {:2} time: {:5} price: {:5}'
                     .format(
                         y[0],
                         y[1],
