@@ -31,19 +31,45 @@ class Tour:
         return cost
 
     def get_duration(self):
-        # duration = 0;
-        # old_one = None
-        # for flight in self.flights:
-        #   duration += flight.duration
-        #   if old_one is None:
-        #       old_one = flight
-        #   else
-        #       duration += flight.departure_time - old_one.departure_time + old_one.duration
-        # Different approach
-        # TODO: check order?
-        flights = self.as_flights_full()
-        duration = flights[-1].departure_time + flights[-1].duration - flights[0].departure_time
-        return duration
+
+        _flights = iter(self.as_flights_full())
+        current_flight = next(_flights)
+
+        duration = 0;
+        current_time = current_flight.departure_time
+        current_time %= 24
+
+        try:
+            while True:
+
+                # Flight
+                print("Departure: " + str(current_time%24))
+                duration += current_flight.duration
+                current_time += current_flight.duration
+                print("Arrival: " + str(current_time%24))
+                next_flight = next(_flights)
+
+                current_time %= 24
+
+                # Waiting for next flight
+                if current_time > next_flight.departure_time:
+                    time_to_add = 24 - current_time
+                    duration += time_to_add
+                    current_time += time_to_add
+                    duration += next_flight.departure_time
+                else:
+                    time_to_add = next_flight.departure_time - current_time
+                    duration += time_to_add
+                    current_time += time_to_add
+
+                current_time %= 24
+
+                current_flight = next_flight
+        except StopIteration:
+            print("\n")
+            return duration
+
+        # TODO: do dokonczenia!!! nie dziala dobrze we wszystkich przypadkach
 
     def get_size(self):
         return len(self.flights)
@@ -67,11 +93,11 @@ class Tour:
         self.set_flights(self.graph.find_random_path(self.src_idx, self.dst_idx))
 
     def __repr__(self):
-        return 'Tour from {} to {} \n  airports: {}\n  flights idx: {}\n  flights full: \n{}\n  Total cost: {} duration: {}\n'.format(
+        return 'Tour from {} to {} \n  airports: {}\n  flights idx: {}\n  flights full: \n{}\n  Total cost: {}$ duration: {}h\n'.format(
                 self.get_src(),
                 self.get_dst(),
                 self.as_airports(), 
                 self.as_flights_idx(), 
                 '\n'.join('    ' + str(x) for x in self.as_flights_full()),
                 self.get_cost(),
-                self.get_duration())
+                round(self.get_duration(), 2))

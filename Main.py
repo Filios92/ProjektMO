@@ -3,7 +3,7 @@ from GeneticAlgorithm import *
 from DataGenerator import *
 
 # Tests
-data = DataGenerator(5)
+data = DataGenerator(5)  # number of airports as nodes of graph
 data.create_graph()
 testsuite_airports = data.get_airports()
 testsuite_graph = data.get_graph()
@@ -19,7 +19,7 @@ t = Tour(graph, 0, 1)
 t.find_path()
 print(t)
 
-t = Tour(graph, 0, 1)
+t = Tour(graph, 0, 2)
 t.find_random_path()
 print(t)
 
