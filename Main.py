@@ -38,16 +38,22 @@ print(' === GeneticAlgorithm tests ===')
 # Make popoulation
 pop = Population(5, graph, params['start_idx'], params['end_idx'], True)
 
-# Get best one
-fittest = pop.get_fittest()
-print('Initial {}'.format(fittest))
+if not pop.tour_exists():
+    print('Tour from {} to {} doesnt exist :('.format(pop.get_start_idx(), pop.get_end_idx()))
 
-# Transmutation!
-pop = GA.evolve_population(pop)
-for x in range(1,10):
+else:
+    # Get best one
+    fittest = pop.get_fittest()
+    print('Initial {}'.format(fittest))
+
+    # Transmutation!
     pop = GA.evolve_population(pop)
+    for x in range(1,10):
+        pop = GA.evolve_population(pop)
 
-# Get best best one
-fittest = pop.get_fittest()
-print('Finished')
-print('Final {}'.format(fittest))
+    # Get best best one
+    fittest = pop.get_fittest()
+    print('Finished')
+    print('Final {}'.format(fittest))
+
+    GA.mutate(fittest)
