@@ -17,13 +17,15 @@ class Population:
 
     # Gets the best tour in the population
     def get_fittest(self):
-        fit = 0
+        # fit = 0          # for HIGHER is BETTER
+        fit = 1000000000 # for LOWER  is BETTER
         for x in self.tours:
             tmp_fit = x.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights)
-            if tmp_fit > fit:
+            # if fit < tmp_fit: # for HIGHER is BETTER
+            if fit > tmp_fit: # for LOWER  is BETTER
                 fit = tmp_fit
                 ret = x
-        return x
+        return ret
 
     def get_tour(self, idx=None):
         if idx is None:
@@ -50,16 +52,19 @@ class Population:
                 return False
         return True
 
+    def drop_fitness(self):
+        return list(int(x.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights)) for x in self.tours)
+
 class GA:
     """
     Manages algorithms for evolving population
     """
-    mutation_rate   = 0.015
-    tournament_size = 5
+    mutation_rate   = 0
+    tournament_size = 0
     elitism         = True
-    cost_weight     = 0.1
-    time_weight     = 0.2
-    max_flights     = 5
+    cost_weight     = 0
+    time_weight     = 0
+    max_flights     = 0
 
     # Evolves a population over one generation
     def evolve_population(population):
@@ -155,7 +160,7 @@ class GA:
                     c2 = airports.index(c)
         else:
             # TODO: when no common airports
-            return parent1 if parent1.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) > parent2.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) else parent2
+            return parent1 if parent1.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) < parent2.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) else parent2
 
         # print('Fliths are {}'.format(child_flights))
 
@@ -211,6 +216,9 @@ class GA:
         GA.time_weight = params['time_weight']
         GA.cost_weight = params['cost_weight']
         GA.max_flights = params['max_flights']
+        GA.mutation_rate = params['mutation_rate']
+        GA.tournament_size = params['tournament_size']
+        GA.elitism = params['elitism']
 
         # Make popoulation
         pop = Population(params['pop_size'], params['graph'], params['start_idx'], params['end_idx'], True)
@@ -222,12 +230,15 @@ class GA:
             # Get best one
             fittest = pop.get_fittest()
             print('Initial fittest {}'.format(fittest))
+            print('Fitneses: {} '.format(pop.drop_fitness()))
 
             # Transmutation!
             pop = GA.evolve_population(pop)
+            print('Fitneses: {} '.format(pop.drop_fitness()))
             for x in range( params['generations'] ):
                 print('Evolution # {}'.format(x))
                 pop = GA.evolve_population(pop)
+                print('Fitneses: {} '.format(pop.drop_fitness()))
 
             # Get best best one
             fittest = pop.get_fittest()

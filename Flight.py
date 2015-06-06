@@ -3,20 +3,20 @@ import math
 
 from ManagerBase import *
 
-SPEED = 10
-
 # Flight part
 class Flight:
     """
     Class representing a flight.
     """
+    SPEED = 900000 # Boeing 747, m/h
+
     def __init__(self, src, dst, departure_time, cost, index=None):
         self._src = src
         self._dst = dst
         self._departure_time = departure_time
         self._cost = cost
         self._duration = 0
-        self._speed = SPEED
+        self._speed = Flight.SPEED
         self._duration = src.distance_to_airport(dst) / self._speed
         if index is not None:
             self._index = index 

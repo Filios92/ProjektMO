@@ -19,6 +19,9 @@ def print_help():
     print('  --time_weight <int>              - param options')
     print('  --pop_size <int>                 - param options')
     print('  --generations <int>              - param options')
+    print('  --mutation_rate <float>          - param options')
+    print('  --tournament_size <int>          - param options')
+    print('  --elitism <boolean>              - param options')
     print('No options - generates graph and runs GeneticAlgorithm')
 
 def save_graph_file(graph_save_file):
@@ -49,14 +52,17 @@ def main(argv):
 
     # Parameters
     params = {
-        'graph'      : graph,
-        'start_idx'  : 1,
-        'end_idx'    : 4,
-        'max_flights': 5,
-        'cost_weight': 2,
-        'time_weight': 1,
-        'pop_size'   : 10,
-        'generations': 10
+        'graph'           : graph,
+        'start_idx'       : 1,
+        'end_idx'         : 4,
+        'max_flights'     : 5,
+        'cost_weight'     : 2,
+        'time_weight'     : 1,
+        'pop_size'        : 10,
+        'generations'     : 10,
+        'mutation_rate'   : 0.015,
+        'tournament_size' : 5,
+        'elitism'         : True
     }
 
     # Parse command line options
@@ -69,7 +75,10 @@ def main(argv):
             "cost_weight=",
             "time_weight=",
             "pop_size="   ,
-            "generations="
+            "generations=",
+            "mutation_rate=",
+            "tournament_size=",
+            "elitism="
             ])
     except getopt.GetoptError:
         print_help()
@@ -105,9 +114,14 @@ def main(argv):
             print('Verbosity level = {} ({})'.format(verbosity, get_verbosity_info(verbosity)))
 
         elif opt in list("--" + x for x in params.keys()):
-            params[opt[2:]] = int(arg)
+            if opt[2:] == 'mutation_rate':
+                params[opt[2:]] = float(arg)
+            elif opt[2:] == 'elitism':
+                params[opt[2:]] = arg.lower() in ['true', 't', 'tak', 'yes', 'y']
+            else:
+                params[opt[2:]] = int(arg)
 
-    print('Params are: \n{} \n'.format('\n'.join('  {:12}: {}'.format(k, v) for k,v in params.items())))
+    print('Params are: \n{} \n'.format('\n'.join('  {:{}}: {}'.format(k, len(max(params.keys()))+1, v) for k,v in sorted(params.items()))))
 
     # DataGenerator
     data = DataGenerator()
