@@ -2,9 +2,19 @@ from GraphManager import *
 from GeneticAlgorithm import *
 from DataGenerator import *
 
-# Tests
-data = DataGenerator(15)  # number of airports as nodes of graph
-data.create_graph()
+
+load_q = input("Load from saved file? y/n\n")
+
+if load_q == 'y':
+    data = DataGenerator()
+    data.load_saved_graph()
+else:
+    airport_q = int(input("How many airports shall be used to create graph?\n"))
+    data = DataGenerator()
+    data.load_new_data(airport_q)
+    data.create_graph()
+    data.save_graph()
+
 testsuite_airports = data.get_airports()
 testsuite_graph = data.get_graph()
 

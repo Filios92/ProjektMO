@@ -1,5 +1,6 @@
 import csv
 import random
+import pickle
 
 # CSV Parsing positions
 POS_NAME = 4
@@ -11,19 +12,31 @@ PRICE_MIN = 100
 PRICE_MAX = 2000
 
 # destinations count range
-DESTINATIONS_MIN = 2
+DESTINATIONS_MIN = 3
 DESTINATIONS_MAX = 4
+
 
 class DataGenerator:
     test_airports = []
     test_graph = {}
 
-    def __init__(self, limit=10):
-        self.read_file(limit)
-        self.assign_id()
+    def __init__(self):
         pass
 
-    def read_file(self, limit):
+    def load_saved_graph(self):
+        try:
+            data = pickle.load(open("graph.trololo", "rb"))
+            self.test_airports = data[0]
+            self.test_graph = data[1]
+        except:
+            print("Error while loading file...")
+
+    def save_graph(self):
+        if self.test_airports != [] and self.test_graph != {}:
+            data_to_save = [self.test_airports, self.test_graph]
+            pickle.dump(data_to_save, open("graph.trololo", "wb"))
+
+    def load_new_data(self, limit):
         airports = []
 
         with open('airports.dat', 'r', encoding="utf8") as csvfile:
@@ -37,6 +50,8 @@ class DataGenerator:
                     airports.append([None, float(row[POS_LATUTUDE]), float(row[POS_LONGITUDE]), row[POS_NAME]])
 
             self.test_airports = random.sample(airports, limit)
+
+        self.assign_id()
 
     def assign_id(self):
         id = 0
@@ -52,6 +67,7 @@ class DataGenerator:
             current_dest_count = random.randint(DESTINATIONS_MIN, DESTINATIONS_MAX)
 
             # selected target airports for current airport
+
             current_dest_airports = random.sample(self.test_airports, current_dest_count)
 
             # create graph edges
