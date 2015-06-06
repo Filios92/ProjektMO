@@ -23,18 +23,18 @@ class DataGenerator:
     def __init__(self):
         pass
 
-    def load_saved_graph(self):
+    def load_saved_graph(self, file_name):
         try:
-            data = pickle.load(open("graph.trololo", "rb"))
+            data = pickle.load(open(file_name, "rb"))
             self.test_airports = data[0]
             self.test_graph = data[1]
         except:
             print("Error while loading file...")
 
-    def save_graph(self):
+    def save_graph(self, file_name):
         if self.test_airports != [] and self.test_graph != {}:
             data_to_save = [self.test_airports, self.test_graph]
-            pickle.dump(data_to_save, open("graph.trololo", "wb"))
+            pickle.dump(data_to_save, open(file_name, "wb"))
 
     def load_new_data(self, limit):
         airports = []

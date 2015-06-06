@@ -1,6 +1,9 @@
 from Airport import *
 from Flight import *
 
+# Adjust
+COST_TO_DURATION_RATIO = 10 
+
 # Tour, specific solution, list of flight indeces / flights / airports
 class Tour:
     """
@@ -69,45 +72,6 @@ class Tour:
 
         return self.duration
 
-        # _flights = iter(self.as_flights_full())
-        # current_flight = next(_flights)
-
-        # duration = 0;
-        # current_time = current_flight.departure_time
-        # current_time %= 24
-
-        # try:
-        #     while True:
-
-        #         # Flight
-        #         print("Departure: " + str(current_time%24))
-        #         duration += current_flight.duration
-        #         current_time += current_flight.duration
-        #         print("Arrival: " + str(current_time%24))
-        #         next_flight = next(_flights)
-
-        #         current_time %= 24
-
-        #         # Waiting for next flight
-        #         if current_time > next_flight.departure_time:
-        #             time_to_add = 24 - current_time
-        #             duration += time_to_add
-        #             current_time += time_to_add
-        #             duration += next_flight.departure_time
-        #         else:
-        #             time_to_add = next_flight.departure_time - current_time
-        #             duration += time_to_add
-        #             current_time += time_to_add
-
-        #         current_time %= 24
-
-        #         current_flight = next_flight
-        # except StopIteration:
-        #     print("\n")
-        #     return duration
-
-        # TODO: do dokonczenia!!! nie dziala dobrze we wszystkich przypadkach
-
     def get_graph(self):
         return self.graph
 
@@ -136,19 +100,12 @@ class Tour:
         a = self.graph.find_random_path(self.src_idx, self.dst_idx)
         self.set_flights(a)
 
-    # TODO: implement, funkcja celu :D
-    def get_fitness(self):
+    def get_fitness(self, time_weight, cost_weight, max_flights):
         if not self.flights:
             return 0
             
-        # TODO: move these vars somewhere else (to function args)
-        cost_weight = 0.2
-        time_weight = 0.1
-        max_flights = 5
-
-        # TODO: need to optimise weights, so e.g. 100$ is like 10h
         # Lower is better
-        f = cost_weight * self.get_cost() + time_weight * self.get_duration()
+        f = cost_weight * self.get_cost() + COST_TO_DURATION_RATIO * time_weight * self.get_duration()
 
         # Funkcja kary (?)
         # if self.get_size() > max_flights:

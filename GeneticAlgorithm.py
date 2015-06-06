@@ -10,7 +10,7 @@ class Population:
         self.tour_idx = 0
         self.start_idx = start_idx
         self.end_idx = end_idx
-        
+
         if do_initialization: 
             for x in range(0,population_size):
                 self.tours[x].find_random_path()
@@ -19,8 +19,9 @@ class Population:
     def get_fittest(self):
         fit = 0
         for x in self.tours:
-            if x.get_fitness() > fit:
-                fit = x.get_fitness()
+            tmp_fit = x.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights)
+            if tmp_fit > fit:
+                fit = tmp_fit
                 ret = x
         return x
 
@@ -53,9 +54,12 @@ class GA:
     """
     Manages algorithms for evolving population
     """
-    mutation_rate = 0.015
+    mutation_rate   = 0.015
     tournament_size = 5
-    elitism = True
+    elitism         = True
+    cost_weight     = 0.1
+    time_weight     = 0.2
+    max_flights     = 5
 
     # Evolves a population over one generation
     def evolve_population(population):
@@ -77,13 +81,12 @@ class GA:
             new_pop.save_tour(child)
 
         # Mutate
-        for x in range(elitism_offset-1, population.get_population_size()):
+        for x in range(elitism_offset, population.get_population_size()):
             GA.mutate(new_pop.get_tour(x))
 
         return new_pop
 
     # Applies crossover to a set of parents and creates offspring
-    # TODO: implement
     def crossover(parent1, parent2):
         a1 = parent1.as_airports()
         a2 = parent2.as_airports()
@@ -136,10 +139,10 @@ class GA:
                 # Choose from the other one
                 if airports is a1: 
                     airports = a2 
-                    flights = f2
+                    flights  = f2
                 else:
                     airports = a1
-                    flights = f1
+                    flights  = f1
 
                 # Next iterations
                 c1 = airports.index(c)
@@ -152,9 +155,8 @@ class GA:
                     c2 = airports.index(c)
         else:
             # TODO: when no common airports
-            return parent1 if parent1.get_fitness() > parent2.get_fitness() else parent2
+            return parent1 if parent1.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) > parent2.get_fitness(GA.time_weight, GA.cost_weight, GA.max_flights) else parent2
 
-        # Replace airports with flight indices
         # print('Fliths are {}'.format(child_flights))
 
         child = parent1.make_basic_copy()
@@ -204,3 +206,29 @@ class GA:
 
         # Get fittest
         return tournament.get_fittest()
+
+    def run_with_params(params):
+        GA.time_weight = params['time_weight']
+        GA.cost_weight = params['cost_weight']
+        GA.max_flights = params['max_flights']
+
+        # Make popoulation
+        pop = Population(params['pop_size'], params['graph'], params['start_idx'], params['end_idx'], True)
+
+        if not pop.tour_exists():
+            print('Tour from {} to {} doesnt exist :('.format(pop.get_start_idx(), pop.get_end_idx()))
+
+        else:
+            # Get best one
+            fittest = pop.get_fittest()
+            print('Initial fittest {}'.format(fittest))
+
+            # Transmutation!
+            pop = GA.evolve_population(pop)
+            for x in range( params['generations'] ):
+                print('Evolution # {}'.format(x))
+                pop = GA.evolve_population(pop)
+
+            # Get best best one
+            fittest = pop.get_fittest()
+            print('Final fittest {}'.format(fittest))
