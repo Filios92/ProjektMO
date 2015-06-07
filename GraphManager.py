@@ -79,12 +79,12 @@ class GraphManager:
         path = path + [start]
         if len(path) > self.max_flights:
             # print('We have gone too deep... Going out.')
-            flights.pop()
+            # flights.pop()
             return None
         if start == end:
             return flights
         if start not in self.graph:
-            flights.pop()
+            # flights.pop()
             return None
         posibilities = self.graph[start]
         random.shuffle(posibilities)
