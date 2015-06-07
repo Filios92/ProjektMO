@@ -36,9 +36,12 @@ class Population:
     def get_population_size(self):
         return len(self.tours)
     
-    def save_tour(self, tour):
-        self.tours[self.tour_idx] = tour
-        self.tour_idx += 1
+    def save_tour(self, tour, index=None):
+        if index is None:
+            self.tours[self.tour_idx] = tour
+            self.tour_idx += 1
+        else:
+            self.tours[index] = tour
 
     def get_start_idx(self):
         return self.start_idx
@@ -77,17 +80,23 @@ class GA:
             elitism_offset = 1
 
         # Crossover pop
+        print('Crossovering number...', end='')
         for x in range(elitism_offset, population.get_population_size()):
             parent1 = GA.tournament_selection(population)
             parent2 = GA.tournament_selection(population)
-
+            print('{:2} '.format(x), end='')
             child = GA.crossover(parent1, parent2)
 
             new_pop.save_tour(child)
-
+        print('')
         # Mutate
+        print('Mutating number...', end='')
         for x in range(elitism_offset, population.get_population_size()):
-            GA.mutate(new_pop.get_tour(x))
+            if random.random() < GA.mutation_rate:
+                print('{:2} '.format(x), end='')
+                mutated = GA.mutate(new_pop.get_tour(x))
+                new_pop.save_tour(mutated, index=x)
+        print('')
 
         return new_pop
 
@@ -154,7 +163,7 @@ class GA:
                 common_airports.remove(c)
                 c  = random.choice(common_airports)
                 c2 = airports.index(c)
-
+                # print('  Choosing next airport')
                 while c2 < c1:
                     c = random.choice(common_airports)
                     c2 = airports.index(c)
@@ -169,9 +178,10 @@ class GA:
 
         return child
 
-    # Mutate a tour using swap mutation
+    # Mutate a tour 
     def mutate(tour):
-        if random.random() < GA.mutation_rate:
+        mutation_tries = 5
+        for x in range(mutation_tries):
             org_flights = tour.as_flights_idx()
 
             # Choose random position to cut from
@@ -192,11 +202,17 @@ class GA:
             ret = tour.make_basic_copy()
             ret.set_flights(new_flights)
 
-            # print('Mutation complete: \nOrg {} Mutated {}'.format(tour, ret))
+            # print('Mutation complete: \nOrg {} Mutated {}'.format(None, ret))
             # print('Vars were:\n pos1 {}\n pos2 {}\n size: {}\n start_airport {}\n end_airport {}'
-                # .format(pos1, pos2, tour.get_size(), start_airport, end_airport))
+            #     .format(pos1, pos2, tour.get_size(), start_airport, end_airport))
+            
+            if ret.is_valid():
+                return ret
+            else:
+                continue
 
-            return ret
+        print('Couldnt mutate valid... :(')
+        return tour
 
 
     # Selects candidate tour for crossover
@@ -209,6 +225,7 @@ class GA:
             random_id = math.floor(random.random() * population.get_population_size())
             tournament.save_tour(population.get_tour(random_id))
 
+        # print('Tournament fitness are {}'.format(tournament.drop_fitness()))
         # Get fittest
         return tournament.get_fittest()
 

@@ -117,7 +117,7 @@ def main(argv):
             if opt[2:] == 'mutation_rate':
                 params[opt[2:]] = float(arg)
             elif opt[2:] == 'elitism':
-                params[opt[2:]] = arg.lower() in ['true', 't', 'tak', 'yes', 'y']
+                params[opt[2:]] = arg.lower() in ['true', 't', 'tak', 'yes', 'y', '1']
             else:
                 params[opt[2:]] = int(arg)
 

@@ -34,7 +34,7 @@ class Tour:
         self.cost     = 0
 
     def is_valid(self):
-        return True
+        return len(self.as_airports()) == len(set(self.as_airports()))
 
     def get_cost(self):
         if not self.cost:
