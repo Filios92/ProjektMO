@@ -8,7 +8,7 @@ class Tour:
     Class representing a tour.
     """
     # Adjust
-    COST_TO_DURATION_RATIO = 10 
+    COST_TO_DURATION_RATIO = 100
 
     def __init__(self, graph, start_idx, end_idx):
         self.graph   = graph

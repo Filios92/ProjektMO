@@ -22,6 +22,8 @@ def print_help():
     print('  --mutation_rate <float>          - param options')
     print('  --tournament_size <int>          - param options')
     print('  --elitism <boolean>              - param options')
+    print('  --dest_min <int>                 - minimum destinations per airport')
+    print('  --dest_max <int>                 - maximum destinations per airport')
     print('No options - generates graph and runs GeneticAlgorithm')
 
 def save_graph_file(graph_save_file):
@@ -55,14 +57,16 @@ def main(argv):
         'graph'           : graph,
         'start_idx'       : 1,
         'end_idx'         : 4,
-        'max_flights'     : 5,
+        'max_flights'     : 10,
         'cost_weight'     : 2,
         'time_weight'     : 1,
         'pop_size'        : 10,
         'generations'     : 10,
         'mutation_rate'   : 0.015,
         'tournament_size' : 5,
-        'elitism'         : True
+        'elitism'         : True,
+        'dest_min'        : 2,
+        'dest_max'        : 6
     }
 
     # Parse command line options
@@ -78,7 +82,9 @@ def main(argv):
             "generations=",
             "mutation_rate=",
             "tournament_size=",
-            "elitism="
+            "elitism=",
+            "dest_min=",
+            "dest_max="
             ])
     except getopt.GetoptError:
         print_help()
@@ -125,6 +131,8 @@ def main(argv):
 
     # DataGenerator
     data = DataGenerator()
+    DataGenerator.DESTINATIONS_MIN = params['dest_min']
+    DataGenerator.DESTINATIONS_MAX = params['dest_max']
     
     if input_graph_file is not None:
         data.load_saved_graph(input_graph_file)
