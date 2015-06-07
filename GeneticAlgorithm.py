@@ -244,19 +244,42 @@ class GA:
             print('Tour from {} to {} doesnt exist :('.format(pop.get_start_idx(), pop.get_end_idx()))
 
         else:
+            # FOR TESTS ONLY
+            list_of_fittest_in_pops = []
+		
             # Get best one
             fittest = pop.get_fittest()
             print('Initial fittest {}'.format(fittest))
-            print('Fitneses: {} '.format(pop.drop_fitness()))
+            # print('Fitneses: {} '.format(pop.drop_fitness()))
 
+			# FOR TESTS ONLY
+            list_of_fittest_in_pops.append(float("%.2f" % (1000*fittest.get_fitness(params['time_weight'], params['cost_weight'], params['max_flights']))))
+			
+			
             # Transmutation!
             pop = GA.evolve_population(pop)
-            print('Fitneses: {} '.format(pop.drop_fitness()))
+            # print('Fitneses: {} '.format(pop.drop_fitness()))
             for x in range( params['generations'] ):
-                print('Evolution # {}'.format(x))
+                # print('Evolution # {}'.format(x))
                 pop = GA.evolve_population(pop)
-                print('Fitneses: {} '.format(pop.drop_fitness()))
+                # print('Fitneses: {} '.format(pop.drop_fitness()))
 
+				# FOR TESTS ONLY
+                fittest = pop.get_fittest()
+                list_of_fittest_in_pops.append(float("%.2f" % (1000*fittest.get_fitness(params['time_weight'], params['cost_weight'], params['max_flights']))))
+				
+				
             # Get best best one
             fittest = pop.get_fittest()
             print('Final fittest {}'.format(fittest))
+			
+			#====================================================================================
+			# FOR TESTS ONLY
+            # print(str(list_of_fittest_in_pops))
+            with open('performance.txt', 'a') as file:
+                file.write("{}\n".format(list_of_fittest_in_pops))
+		
+            if (list_of_fittest_in_pops[0] < list_of_fittest_in_pops[-1]): 
+                sys.exit(1)
+            else: 
+                sys.exit(0)

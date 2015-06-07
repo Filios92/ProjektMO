@@ -57,16 +57,16 @@ def main(argv):
         'graph'           : graph,
         'start_idx'       : 1,
         'end_idx'         : 4,
-        'max_flights'     : 10,
+        'max_flights'     : 20,
         'cost_weight'     : 2,
         'time_weight'     : 1,
-        'pop_size'        : 10,
+        'pop_size'        : 20,
         'generations'     : 10,
-        'mutation_rate'   : 0.015,
-        'tournament_size' : 5,
-        'elitism'         : True,
+        'mutation_rate'   : 0.2,
+        'tournament_size' : 2,
+        'elitism'         : False,
         'dest_min'        : 2,
-        'dest_max'        : 6
+        'dest_max'        : 10
     }
 
     # Parse command line options
