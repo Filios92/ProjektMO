@@ -139,7 +139,7 @@ def main(argv):
     testsuite_airports = data.get_airports()
     testsuite_graph = data.get_graph()
 
-    graph = GraphManager()
+    graph = GraphManager(params['max_flights'])
     graph.set_graph(testsuite_graph, testsuite_airports)
 
     if verbosity > 1:

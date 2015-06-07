@@ -5,10 +5,11 @@ class GraphManager:
     """
     This is GraphManager class. It parses the test suites which are in lists format.
     """
-    def __init__(self):
+    def __init__(self, max_flights):
         self.flight_manager = FlightManager()
         self.airport_manager = AirportManager()
         self.graph = {}
+        self.max_flights = max_flights
         
     def get_flight_manager(self):
         return self.flight_manager
@@ -76,6 +77,10 @@ class GraphManager:
     # Return full arc / flight
     def find_random_path(self, start, end, path=[], flights=[]):
         path = path + [start]
+        if len(path) > self.max_flights:
+            print('We have gone too deep... Going out.')
+            flights.pop()
+            return None
         if start == end:
             return flights
         if start not in self.graph:

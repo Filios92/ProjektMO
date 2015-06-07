@@ -190,7 +190,7 @@ class GA:
 
             start_airport = tour.as_airports()[pos1]
             end_airport   = tour.as_airports()[pos2+1]
-            
+
             # Find random path in the hole
             tmp = Tour(tour.get_graph(), start_airport, end_airport)
             tmp.find_random_path()
@@ -204,7 +204,7 @@ class GA:
 
             # print('Mutation complete: \nOrg {} Mutated {}'.format(None, ret))
             # print('Vars were:\n pos1 {}\n pos2 {}\n size: {}\n start_airport {}\n end_airport {}'
-            #     .format(pos1, pos2, tour.get_size(), start_airport, end_airport))
+                 # .format(pos1, pos2, tour.get_size(), start_airport, end_airport))
             
             if ret.is_valid():
                 return ret
