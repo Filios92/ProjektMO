@@ -1,3 +1,4 @@
+import sys
 from Tour import *
 
 class Population:
