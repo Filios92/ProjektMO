@@ -20,7 +20,7 @@ for pop_size in range(5,125,20):
 
 
 # TEST parametru ILOSC GENERACJI
-for generations in range(10,100,10):
+for generations in range(10,40,10):
     failure_counter = 0
     start_time = time.clock()
     for index in range(0,nbr_of_iterations):
@@ -46,6 +46,32 @@ for mutation_rate in range(0.01,1.01,0.1):
         file.write("Mutation rate: {}, the rest of params: DEFAULT \n".format(mutation_rate))
         file.write("Failure ratio: " + str(failure_counter/nbr_of_iterations) + "\n")
         file.write("Elapsed time: " + str(time.clock() - start_time) + " seconds\n\n")
+        
 
+# TEST parametru ROZMIAR TURNIEJU
+for tournament_size in range(2,12,2):
+    failure_counter = 0
+    start_time = time.clock()
+    for index in range(0,nbr_of_iterations):
+        failure_counter += subprocess.call("python Main.py -i graph.txt -v 1 --tournament_size " + str(tournament_size), shell=True)
+
+    with open('performance.txt', 'a') as file:
+        file.write("Tournament size: {}, the rest of params: DEFAULT \n".format(tournament_size))
+        file.write("Failure ratio: " + str(failure_counter/nbr_of_iterations) + "\n")
+        file.write("Elapsed time: " + str(time.clock() - start_time) + " seconds\n\n")
+        
+        
+ # TEST parametru ELITARNOSC
+for elitism in (True, False):
+    failure_counter = 0
+    start_time = time.clock()
+    for index in range(0,nbr_of_iterations):
+        failure_counter += subprocess.call("python Main.py -i graph.txt -v 1 --elitism " + str(elitism), shell=True)
+
+    with open('performance.txt', 'a') as file:
+        file.write("Elitism: {}, the rest of params: DEFAULT \n".format(elitism))
+        file.write("Failure ratio: " + str(failure_counter/nbr_of_iterations) + "\n")
+        file.write("Elapsed time: " + str(time.clock() - start_time) + " seconds\n\n")       
+        
 print("Finished")
 print("Elapsed time: " + str(time.clock() - algo_start_time) + " seconds")

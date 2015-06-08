@@ -57,7 +57,7 @@ def main(argv):
         'graph'           : graph,
         'start_idx'       : 1,
         'end_idx'         : 4,
-        'max_flights'     : 20,
+        'max_flights'     : 100,
         'cost_weight'     : 2,
         'time_weight'     : 1,
         'pop_size'        : 20,
