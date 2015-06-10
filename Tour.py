@@ -1,3 +1,4 @@
+import time
 from GeneticAlgorithm import *
 from Airport import *
 from Flight import *
@@ -101,8 +102,13 @@ class Tour:
         self.set_flights(self.graph.find_path(self.src_idx, self.dst_idx))
 
     def find_random_path(self):
-        a = self.graph.find_random_path(self.src_idx, self.dst_idx)
-        self.set_flights(a)
+        timer = time.clock()
+        a = self.graph.find_random_path(self.src_idx, self.dst_idx, timer=timer)
+        if a:
+            self.set_flights(a)
+            return True
+        else:
+            return False
 
     def get_fitness(self, time_weight, cost_weight, max_flights):
         if self.fitness:

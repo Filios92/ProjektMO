@@ -1,3 +1,4 @@
+import time
 from Airport import *
 from Flight import *
 
@@ -75,10 +76,14 @@ class GraphManager:
 
     # Search graph with arc shuffling
     # Return full arc / flight
-    def find_random_path(self, start, end, path=[], flights=[]):
+    def find_random_path(self, start, end, path=[], flights=[], timer=None):
         path = path + [start]
+        if timer is not None and time.clock()-timer > 2*60:
+            timer = time.clock()
+            print('timeout')
+            return None
         if len(path) > self.max_flights:
-            # print('We have gone too deep... Going out.')
+            print('\rWe have gone too deep... Going out. {}'.format(len(path)), end='')
             # flights.pop()
             return None
         if start == end:
@@ -92,7 +97,7 @@ class GraphManager:
             if node[1] not in path:
                 # flights.append(node[0])
                 flights = flights + [node[0]]
-                newpath = self.find_random_path(node[1], end, path, flights)
+                newpath = self.find_random_path(node[1], end, path, flights, timer)
                 if newpath: return newpath
                 else: flights.pop()
         # flights.pop()

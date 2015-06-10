@@ -57,7 +57,7 @@ def main(argv):
         'graph'           : graph,
         'start_idx'       : 1,
         'end_idx'         : 4,
-        'max_flights'     : 100,
+        'max_flights'     : 150,
         'cost_weight'     : 2,
         'time_weight'     : 1,
         'pop_size'        : 20,
@@ -66,7 +66,7 @@ def main(argv):
         'tournament_size' : 2,
         'elitism'         : False,
         'dest_min'        : 2,
-        'dest_max'        : 10
+        'dest_max'        : 5
     }
 
     # Parse command line options

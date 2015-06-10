@@ -194,7 +194,9 @@ class GA:
 
             # Find random path in the hole
             tmp = Tour(tour.get_graph(), start_airport, end_airport)
-            tmp.find_random_path()
+            if not tmp.find_random_path():
+                print('Could find path...')
+                return tour
 
             # Put new flights in the hole
             new_flights = org_flights[:pos1] + tmp.as_flights_idx() + org_flights[pos2+1:]

@@ -1,6 +1,6 @@
 import subprocess, time
 
-nbr_of_iterations = 50
+nbr_of_iterations = 10
 algo_start_time = time.clock()
 
 # TEST parametru ROZMIAR POLPULACJI
@@ -36,7 +36,8 @@ print("Elapsed time: " + str(time.clock() - algo_start_time) + " seconds")
 
 
 # TEST parametru WSKAZNIK MUTACJI
-for mutation_rate in range(0.01,1.01,0.1):
+for mutation_rate in range(1,101,10):
+    mutation_rate = mutation_rate * 0.01
     failure_counter = 0
     start_time = time.clock()
     for index in range(0,nbr_of_iterations):
